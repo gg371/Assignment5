@@ -1,7 +1,52 @@
-#include <stdio.h>
+/**
+* Author: Gracyn and Andrea
+* Date: 11/12/19
+* These are the code for the functions defined in string_utils.h
+*/
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 
+#include "string_utils.h"
+
+/*
+char * scrubHTML(const char *str){
+  char *newStr = (char *) malloc(sizeof(char) * strlen(str));
+  strcpy(newStr, str);
+
+  char *p = strchr(newStr, '&');
+  char *q = strchr(newStr, '<');
+  char *r = strchr(newStr, '>');
+  char *s = strchr(newStr, '"');
+  printf("%s\n", p);
+  printf("%s\n", q);
+  printf("%s\n", r);
+  printf("%s\n", s);
+
+  for(int i = 0; i < strlen(str); i++){
+
+    if(p != NULL){
+      p = "&amp;";
+
+    }
+    else if(q != NULL){
+      q = "&lt;";
+
+    }
+    else if(r != NULL){
+      r = "&gt;";
+
+    }
+    else if(s != NULL){
+      s = "&quot;";
+
+    }
+
+  }
+
+  return newStr;
+}
+*/
 char * scrubHTML(const char *str){
   int stringLength = strlen(str);
   //this for loop goes through the passed in string and stringLengths the number of times
@@ -20,9 +65,9 @@ char * scrubHTML(const char *str){
   }
   char *escapedArray = (char *) malloc((stringLength + 1) * sizeof(char));
   int index = 0;
+
   //this for loop goes through the passed in string and finds where the special characters are an then replaces
   //them with the escaped charcters versions of them
-
   for(int i = 0; i < stringLength; i++){
     if(str[i] == '&'){
       escapedArray[index] = '&';
@@ -157,25 +202,21 @@ char * smartScrubHTML(const char *str){
   return escapedArray;
 
 }
-/*
 
 void trim(char *str){
   int stringLength = strlen(str);
-  int whitespaceCount = 0;
+  char *tempStr = (char *) malloc(sizeof(char) * (stringLength + 1));
+  int index = 0;
+
   for(int i = 0; i < stringLength; i++){
     if(str[i] != ' '){
-      break;
-    }
-    else{
-      whitespaceCount++;
+      tempStr[index] = str[i];
+      index++;
     }
   }
-  strncpy(str, &str[whitespaceCount], stringLength - whitespaceCount);
-  printf("%s\n", str);
-
-
+  str = tempStr;
 }
-
+/*
 char * formatPhoneNumber(const char *phone){
   int stringLength = strlen(phone);
   char *formatedNumber = (char*) malloc(14 + 1 * sizeof(char));
@@ -183,14 +224,9 @@ char * formatPhoneNumber(const char *phone){
   formatedNumber[15] = '\0';
   for(int i = 0; i < stringLength; i++){
   }
-
 }
-
 int getFileSize(const char *fileName){
-
 }
-
 char * getFileContents(const char *fileName){
-
 }
 */
