@@ -64,25 +64,27 @@ char * scrubHTML(const char *str){
   return escapedArray;
 
 }
-/*
+
 char * smartScrubHTML(const char *str){
   int stringLength = strlen(str);
   //this for loop goes through the passed in string and stringLengths the number of times
   //one of the special characters shows up to calculate the extra amount of memory needed for the
   //length of the new string.
+  char testString[7];
   for(int i = 0; i < stringLength; i++){
     if(str[i] == '&'){
-      char testString[7];
-      if(0 = strcmp(strcpy(testString, &str[i], 4), "&lt;")){
+
+
+      if(0 == strcmp(strncpy(testString, &str[i], 4), "&lt;")){
         stringLength = stringLength;
       }
-      else if(0 = strcmp(strcpy(testString, &str[i], 4), "&gt;")){
+      else if(0 == strcmp(strncpy(testString, &str[i], 4), "&gt;")){
         stringLength = stringLength;
       }
-      else if(0 = strcmp(strcpy(testString, &str[i], 5), "&amp;")){
+      else if(0 == strcmp(strncpy(testString, &str[i], 5), "&amp;")){
         stringLength = stringLength;
       }
-      else if(0 = strcmp(strcpy(testString, &str[i], 6), "&quot;")){
+      else if(0 == strcmp(strncpy(testString, &str[i], 6), "&quot;")){
         stringLength = stringLength;
       }
       else{
@@ -97,21 +99,21 @@ char * smartScrubHTML(const char *str){
     }
   }
 
-  char *escapedArray = (cahr *) malloc((stringLength + 1) * sizeof(char));
+  char *escapedArray = (char *) malloc((stringLength + 1) * sizeof(char));
   int index = 0;
 
   for(int i = 0; i < stringLength; i++){
     if(str[i] == '&'){
-      if(0 = strcmp(strcpy(testString, &str[i], 4), "&lt;")){
+      if(0 == strcmp(strncpy(testString, &str[i], 4), "&lt;")){
         index = index + 4;
       }
-      else if(0 = strcmp(strcpy(testString, &str[i], 4), "&gt;")){
+      else if(0 ==strcmp(strncpy(testString, &str[i], 4), "&gt;")){
         index = index + 4;
       }
-      else if(0 = strcmp(strcpy(testString, &str[i], 5), "&amp;")){
+      else if(0 == strcmp(strncpy(testString, &str[i], 5), "&amp;")){
         index = index + 5;
       }
-      else if(0 = strcmp(strcpy(testString, &str[i], 6), "&quot;")){
+      else if(0 == strcmp(strncpy(testString, &str[i], 6), "&quot;")){
         index = index + 6;
       }
       else{
@@ -155,7 +157,7 @@ char * smartScrubHTML(const char *str){
   return escapedArray;
 
 }
-
+/*
 
 void trim(char *str){
   int stringLength = strlen(str);
