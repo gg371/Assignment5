@@ -216,17 +216,67 @@ void trim(char *str){
   }
   str = tempStr;
 }
-/*
+
 char * formatPhoneNumber(const char *phone){
   int stringLength = strlen(phone);
-  char *formatedNumber = (char*) malloc(14 + 1 * sizeof(char));
-  formatedNumber[0] = '(';
-  formatedNumber[15] = '\0';
-  for(int i = 0; i < stringLength; i++){
+  int formatedNumLen = 15; //14 + 1
+  char *formatedNumber = (char *) malloc(formatedNumLen * sizeof(char));
+
+  char *allNums = (char *) malloc(sizeof(char) * stringLength);
+  int index = 0;
+  for(int j = 0; j < stringLength; j++){
+    if(phone[j] >= '0' && phone[j] <= '9'){
+      allNums[index] = phone[j];
+      index++;
+    }
   }
+
+  if(strlen(allNums) < 10 || strlen(allNums) > 11){
+    return NULL;
+  }
+  //for numbers like 1-402-555-1234
+  //get rid of the one in front and move all the numbers down an index
+  if(strlen(allNums) == 11){
+    for(int k = 0; k < stringLength; k++){
+      allNums[k] = allNums[k+1];
+    }
+  }
+
+  index = 0;
+  for(int i = 0; i < formatedNumLen; i++){
+    if(i == 0){
+      formatedNumber[0] = '(';
+    }
+    else if(i < 4){
+      formatedNumber[i] = allNums[index];
+      index++;
+    }
+    else if(i == 4){
+      formatedNumber[i] = ')';
+    }
+    else if(i == 5){
+      formatedNumber[i] = ' ';
+    }
+    else if(i < 9){
+      formatedNumber[i] = allNums[index];
+      index++;
+    }
+    else if(i == 9){
+      formatedNumber[i] = '-';
+    }
+    else if(i < 14){
+      formatedNumber[i] = allNums[index];
+      index++;
+    }
+    else if(i == 14){
+      formatedNumber[i] = '\0';
+    }
+  }
+
+  return formatedNumber;
 }
+
 int getFileSize(const char *fileName){
 }
 char * getFileContents(const char *fileName){
 }
-*/
