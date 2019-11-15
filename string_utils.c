@@ -13,7 +13,6 @@
 char * scrubHTML(const char *str){
   char *newStr = (char *) malloc(sizeof(char) * strlen(str));
   strcpy(newStr, str);
-
   char *p = strchr(newStr, '&');
   char *q = strchr(newStr, '<');
   char *r = strchr(newStr, '>');
@@ -22,32 +21,27 @@ char * scrubHTML(const char *str){
   printf("%s\n", q);
   printf("%s\n", r);
   printf("%s\n", s);
-
   for(int i = 0; i < strlen(str); i++){
-
     if(p != NULL){
       p = "&amp;";
-
     }
     else if(q != NULL){
       q = "&lt;";
-
     }
     else if(r != NULL){
       r = "&gt;";
-
     }
     else if(s != NULL){
       s = "&quot;";
-
     }
-
   }
-
   return newStr;
 }
 */
 char * scrubHTML(const char *str){
+  if(str == NULL){
+    return NULL;
+  }
   int stringLength = strlen(str);
   //this for loop goes through the passed in string and stringLengths the number of times
   //one of the special characters shows up to calculate the extra amount of memory needed for the
@@ -111,55 +105,84 @@ char * scrubHTML(const char *str){
 }
 
 char * smartScrubHTML(const char *str){
+  if(str == NULL){
+    return NULL;
+  }
   int stringLength = strlen(str);
   //this for loop goes through the passed in string and stringLengths the number of times
   //one of the special characters shows up to calculate the extra amount of memory needed for the
   //length of the new string.
   char testString[7];
+  int newStringLength = 0;
   for(int i = 0; i < stringLength; i++){
     if(str[i] == '&'){
 
 
-      if(0 == strcmp(strncpy(testString, &str[i], 4), "&lt;")){
-        stringLength = stringLength;
+      if(str[i + 1] == 'l' && str[i + 2] == 't' && str[i + 3] == ';'){
+        newStringLength = newStringLength + 7;
       }
-      else if(0 == strcmp(strncpy(testString, &str[i], 4), "&gt;")){
-        stringLength = stringLength;
+      else if(str[i + 1] == 'g' && str[i + 2] == 't' && str[i + 3] == ';'){
+        newStringLength = newStringLength + 7;
       }
-      else if(0 == strcmp(strncpy(testString, &str[i], 5), "&amp;")){
-        stringLength = stringLength;
+      else if(str[i + 1] == 'a' && str[i + 2] == 'm' && str[i + 3] == 'p' && str[i + 4] == ';'){
+        newStringLength = newStringLength + 9;
       }
-      else if(0 == strcmp(strncpy(testString, &str[i], 6), "&quot;")){
-        stringLength = stringLength;
+      else if(str[i + 1] == 'q' && str[i + 2] == 'u' && str[i + 3] == 'o' && str[i + 4] == 't' && str[i + 5] == ';'){
+        newStringLength = newStringLength + 11;
       }
       else{
-        stringLength = stringLength + 4;
+        newStringLength = newStringLength + 4;
       }
     }
     else if(str[i] == '<' || str[i] == '>'){
-      stringLength = stringLength + 3;
+      newStringLength = newStringLength + 3;
     }
     else if(str[i] == '"'){
-      stringLength = stringLength + 5;
+      newStringLength = newStringLength + 5;
     }
   }
 
-  char *escapedArray = (char *) malloc((stringLength + 1) * sizeof(char));
+  char *escapedArray = (char *) malloc((newStringLength + 1) * sizeof(char));
   int index = 0;
 
-  for(int i = 0; i < stringLength; i++){
+  for(int i = 0; i < newStringLength; i++){
     if(str[i] == '&'){
-      if(0 == strcmp(strncpy(testString, &str[i], 4), "&lt;")){
-        index = index + 4;
+      if(str[i + 1] == 'l' && str[i + 2] == 't' && str[i + 3] == ';'){
+
+        escapedArray[index] = '&';
+        escapedArray[index + 1] = 'l';
+        escapedArray[index + 2] = 't';
+        escapedArray[index + 3] = ';';
+
+        index = index + 7;
       }
-      else if(0 ==strcmp(strncpy(testString, &str[i], 4), "&gt;")){
-        index = index + 4;
+      else if(str[i + 1] == 'g' && str[i + 2] == 't' && str[i + 3] == ';'){
+
+        escapedArray[index] = '&';
+        escapedArray[index + 1] = 'g';
+        escapedArray[index + 2] = 't';
+        escapedArray[index + 3] = ';';
+
+        index = index + 7;
       }
-      else if(0 == strcmp(strncpy(testString, &str[i], 5), "&amp;")){
-        index = index + 5;
+      else if(str[i + 1] == 'a' && str[i + 2] == 'm' && str[i + 3] == 'p' && str[i + 4] == ';'){
+        escapedArray[index] = '&';
+        escapedArray[index + 1] = 'a';
+        escapedArray[index + 2] = 'm';
+        escapedArray[index + 3] = 'p';
+        escapedArray[index + 4] = ';';
+        index = index + 9;
       }
-      else if(0 == strcmp(strncpy(testString, &str[i], 6), "&quot;")){
-        index = index + 6;
+      else if(str[i + 1] == 'q' && str[i + 2] == 'u' && str[i + 3] == 'o' && str[i + 4] == 't' && str[i + 5] == ';'){
+
+        escapedArray[index] = '&';
+        escapedArray[index + 1] = 'q';
+        escapedArray[index + 2] = 'u';
+        escapedArray[index + 3] = 'o';
+        escapedArray[index + 4] = 't';
+        escapedArray[index + 5] = ';';
+
+        index = index + 11;
       }
       else{
       escapedArray[index] = '&';
@@ -275,8 +298,9 @@ char * formatPhoneNumber(const char *phone){
 
   return formatedNumber;
 }
-
+/*
 int getFileSize(const char *fileName){
 }
 char * getFileContents(const char *fileName){
 }
+*/
