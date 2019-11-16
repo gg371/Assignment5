@@ -120,32 +120,38 @@ char * smartScrubHTML(const char *str){
 
       if(str[i + 1] == 'l' && str[i + 2] == 't' && str[i + 3] == ';'){
         newStringLength = newStringLength + 4;
+        i = i + 4;
       }
       else if(str[i + 1] == 'g' && str[i + 2] == 't' && str[i + 3] == ';'){
         newStringLength = newStringLength + 4;
+        i = i + 4;
       }
       else if(str[i + 1] == 'a' && str[i + 2] == 'm' && str[i + 3] == 'p' && str[i + 4] == ';'){
         newStringLength = newStringLength + 5;
+        i = i + 4;
       }
       else if(str[i + 1] == 'q' && str[i + 2] == 'u' && str[i + 3] == 'o' && str[i + 4] == 't' && str[i + 5] == ';'){
         newStringLength = newStringLength + 6;
+        i = i + 6;
       }
       else{
-        newStringLength = newStringLength + 4;
+        newStringLength = newStringLength + 5;
       }
     }
     else if(str[i] == '<' || str[i] == '>'){
-      newStringLength = newStringLength + 3;
+      newStringLength = newStringLength + 4;
     }
     else if(str[i] == '"'){
       newStringLength = newStringLength + 5;
     }
+    else{
+      newStringLength++;
+    }
   }
- printf("%d\n", newStringLength);
   char *escapedArray = (char *) malloc((newStringLength + 1) * sizeof(char));
   int index = 0;
 
-  for(int i = 0; i < newStringLength; i++){
+  for(int i = 0; i < stringLength; i++){
     if(str[i] == '&'){
       if(str[i + 1] == 'l' && str[i + 2] == 't' && str[i + 3] == ';'){
 
@@ -153,8 +159,8 @@ char * smartScrubHTML(const char *str){
         escapedArray[index + 1] = 'l';
         escapedArray[index + 2] = 't';
         escapedArray[index + 3] = ';';
-
-        index = index + 7;
+        i = i + 3;
+        index = index + 4;
       }
       else if(str[i + 1] == 'g' && str[i + 2] == 't' && str[i + 3] == ';'){
 
@@ -162,8 +168,9 @@ char * smartScrubHTML(const char *str){
         escapedArray[index + 1] = 'g';
         escapedArray[index + 2] = 't';
         escapedArray[index + 3] = ';';
+        i = i + 3;
 
-        index = index + 7;
+        index = index + 4;
       }
       else if(str[i + 1] == 'a' && str[i + 2] == 'm' && str[i + 3] == 'p' && str[i + 4] == ';'){
         escapedArray[index] = '&';
@@ -171,7 +178,8 @@ char * smartScrubHTML(const char *str){
         escapedArray[index + 2] = 'm';
         escapedArray[index + 3] = 'p';
         escapedArray[index + 4] = ';';
-        index = index + 9;
+        i = i + 4;
+        index = index + 5;
       }
       else if(str[i + 1] == 'q' && str[i + 2] == 'u' && str[i + 3] == 'o' && str[i + 4] == 't' && str[i + 5] == ';'){
 
@@ -181,8 +189,9 @@ char * smartScrubHTML(const char *str){
         escapedArray[index + 3] = 'o';
         escapedArray[index + 4] = 't';
         escapedArray[index + 5] = ';';
+        i = i + 5;
 
-        index = index + 11;
+        index = index + 6;
       }
       else{
       escapedArray[index] = '&';
@@ -221,7 +230,7 @@ char * smartScrubHTML(const char *str){
       index++;
     }
   }
-  escapedArray[stringLength] = '\0';
+  escapedArray[newStringLength + 1] = '\0';
   return escapedArray;
 
 }
