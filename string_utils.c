@@ -119,16 +119,16 @@ char * smartScrubHTML(const char *str){
 
 
       if(str[i + 1] == 'l' && str[i + 2] == 't' && str[i + 3] == ';'){
-        newStringLength = newStringLength + 7;
+        newStringLength = newStringLength + 4;
       }
       else if(str[i + 1] == 'g' && str[i + 2] == 't' && str[i + 3] == ';'){
-        newStringLength = newStringLength + 7;
+        newStringLength = newStringLength + 4;
       }
       else if(str[i + 1] == 'a' && str[i + 2] == 'm' && str[i + 3] == 'p' && str[i + 4] == ';'){
-        newStringLength = newStringLength + 9;
+        newStringLength = newStringLength + 5;
       }
       else if(str[i + 1] == 'q' && str[i + 2] == 'u' && str[i + 3] == 'o' && str[i + 4] == 't' && str[i + 5] == ';'){
-        newStringLength = newStringLength + 11;
+        newStringLength = newStringLength + 6;
       }
       else{
         newStringLength = newStringLength + 4;
@@ -141,7 +141,7 @@ char * smartScrubHTML(const char *str){
       newStringLength = newStringLength + 5;
     }
   }
-
+ printf("%d\n", newStringLength);
   char *escapedArray = (char *) malloc((newStringLength + 1) * sizeof(char));
   int index = 0;
 
