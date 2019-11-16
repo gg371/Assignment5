@@ -11,8 +11,11 @@ int main(int argc, char **argv) {
   newStr = scrubHTML(str);
   printf("%s\n", newStr);
 
-  str = "&Hello&amp;"
+  str = ">&amp;&Hello&gt;";
   newStr = smartScrubHTML(str);
   printf("%s\n", newStr);
+
+  str = "  Hello  ";
+  trim(str);
 
 }
