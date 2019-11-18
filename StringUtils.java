@@ -81,9 +81,61 @@ public class StringUtils {
 	    	
 	    	return escapedString;
 	    }
-//
-//	    public static String formatPhoneNumber(String phone) {
-//	    }
+
+	    public static String formatPhoneNumber(String phone) {
+	    	String formatedNumber = "";
+	    	String allNumbers = "";
+	    	
+	    	for(int j = 0; j < phone.length(); j++) {
+	    		if(phone.charAt(j) >= '0' && phone.charAt(j) <= '9') {
+	    			allNumbers += phone.charAt(j);
+	    		}
+	    	}
+	    	
+	    	if(allNumbers.length() < 10 || allNumbers.length() > 11) {
+	    		return null;
+	    	}
+	    	
+	    	if(allNumbers.length() == 11) {
+	    		String tempString = "";
+	    		for(int k = 0; k < allNumbers.length() - 1; k++) { 
+	    			tempString += allNumbers.charAt(k + 1);
+	    		}
+	    		allNumbers = tempString;
+	    	}
+	    	
+	    	int index = 0;
+	    	int formatedNumberLen = 14;
+	    	
+	    	for(int i = 0; i < formatedNumberLen; i++) {
+	    		if(i == 0) {
+	    			formatedNumber += '(';
+	    		}
+	    		else if(i < 4){
+    		      formatedNumber += allNumbers.charAt(index);
+    		      index++;
+    		    }
+    		    else if(i == 4){
+    		      formatedNumber += ')';
+    		    }
+    		    else if(i == 5){
+    		      formatedNumber += ' ';
+    		    }
+    		    else if(i < 9){
+    		      formatedNumber += allNumbers.charAt(index);
+    		      index++;
+    		    }
+    		    else if(i == 9){
+    		      formatedNumber += '-';
+    		    }
+    		    else if(i < 14){
+    		      formatedNumber += allNumbers.charAt(index);
+    		      index++;
+    		    }
+	    	}
+	    	
+	    	return formatedNumber;
+	    }
 //
 //	    public static int getFileSize(String fileName) {
 //	    }
