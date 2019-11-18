@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 public class StringUtils {
 	 	public static String trim(String s) {
@@ -136,10 +139,32 @@ public class StringUtils {
 	    	
 	    	return formatedNumber;
 	    }
-//
-//	    public static int getFileSize(String fileName) {
-//	    }
-//
+
+	    public static int getFileSize(String fileName) {
+	    	int sumBytes = 0;
+	    	
+	    	File f = new File(fileName);
+	    	
+	    	Scanner s;
+			try {
+				s = new Scanner(f);
+				String line = s.nextLine();
+				sumBytes += line.length();
+		    	
+		    	while(s.hasNextLine()) {
+		    		line = s.nextLine();
+		    		sumBytes += (line.length() + 1);
+		    	}
+		 
+		    	s.close();
+		    	
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+	    	
+	    	return sumBytes;
+	    }
+
 //	    public static String getFileContents(String fileName) {
 //	    }
 }
