@@ -4,7 +4,7 @@ public class Tester {
 
 	public static void main(String[] args) {
 		
-		String s = "  he ";
+		String s = "	bloo			";
 		System.out.println(s);
 		
 		String newStr = StringUtils.trim(s);
@@ -28,6 +28,9 @@ public class Tester {
 		
 		int sum = StringUtils.getFileSize("/Users/gracyngreen/eclipse-workspace/Assignment5/src/Temp.txt");
 		System.out.println(sum);
+		
+		String contents = StringUtils.getFileContents("/Users/gracyngreen/eclipse-workspace/Assignment5/src/Temp.txt");
+		System.out.println(contents);
 		
 	}
 

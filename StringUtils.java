@@ -7,7 +7,7 @@ public class StringUtils {
 	 		String tempStr = "";
 	 		
 	 		for(int i = 0; i < s.length(); i++) {
-	 			if(s.charAt(i) != ' ') {
+	 			if(s.charAt(i) != ' ' && s.charAt(i) != '\n' && s.charAt(i) != '\t') {
 	 				tempStr += s.charAt(i);
 	 			}
 	 		}
@@ -149,7 +149,7 @@ public class StringUtils {
 			try {
 				s = new Scanner(f);
 				String line = s.nextLine();
-				sumBytes += line.length();
+				sumBytes += (line.length() + 1);
 		    	
 		    	while(s.hasNextLine()) {
 		    		line = s.nextLine();
@@ -165,6 +165,28 @@ public class StringUtils {
 	    	return sumBytes;
 	    }
 
-//	    public static String getFileContents(String fileName) {
-//	    }
+	    public static String getFileContents(String fileName) {
+	    	String str = "";
+	    	
+	    	File f = new File(fileName);
+	    	
+	    	Scanner s;
+	    	try {
+	    		s = new Scanner(f);
+	    		String line = s.nextLine();
+	    		str += line + "\n";
+	    		
+	    		while(s.hasNextLine()) {
+	    			line = s.nextLine();
+	    			str += line + "\n";
+	    		}
+	    		
+	    		s.close();
+	    		
+	    	} catch (FileNotFoundException e) {
+	    		e.printStackTrace();
+	    	}
+	    	
+	    	return str;
+	    }
 }
