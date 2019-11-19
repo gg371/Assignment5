@@ -1,0 +1,4 @@
+lastName,firstName,NUID,GPA
+Castro,Starlin,11223344,3.48
+Rizzo,Anthony,55667788,3.95
+Bryant,Chris,01234567,2.7

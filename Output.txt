@@ -1,0 +1,20 @@
+[
+	{
+		"lastName": "Castro",
+		"firstName": "Starlin",
+		"NUID": "11223344",
+		"GPA": "3.48"
+	},
+	{
+		"lastName": "Rizzo",
+		"firstName": "Anthony",
+		"NUID": "55667788",
+		"GPA": "3.95"
+	},
+	{
+		"lastName": "Bryant",
+		"firstName": "Chris",
+		"NUID": "01234567",
+		"GPA": "2.7"
+	}
+]
