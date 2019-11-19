@@ -9,35 +9,6 @@
 
 #include "string_utils.h"
 
-/*
-char * scrubHTML(const char *str){
-  char *newStr = (char *) malloc(sizeof(char) * strlen(str));
-  strcpy(newStr, str);
-  char *p = strchr(newStr, '&');
-  char *q = strchr(newStr, '<');
-  char *r = strchr(newStr, '>');
-  char *s = strchr(newStr, '"');
-  printf("%s\n", p);
-  printf("%s\n", q);
-  printf("%s\n", r);
-  printf("%s\n", s);
-  for(int i = 0; i < strlen(str); i++){
-    if(p != NULL){
-      p = "&amp;";
-    }
-    else if(q != NULL){
-      q = "&lt;";
-    }
-    else if(r != NULL){
-      r = "&gt;";
-    }
-    else if(s != NULL){
-      s = "&quot;";
-    }
-  }
-  return newStr;
-}
-*/
 char * scrubHTML(const char *str){
   if(str == NULL){
     return NULL;
@@ -46,7 +17,8 @@ char * scrubHTML(const char *str){
   //this for loop goes through the passed in string and stringLengths the number of times
   //one of the special characters shows up to calculate the extra amount of memory needed for the
   //length of the new string.
-  for(int i = 0; i < stringLength; i++){
+  int i = 0;
+  for(i = 0; i < stringLength; i++){
     if(str[i] == '&'){
       stringLength = stringLength + 4;
     }
@@ -62,7 +34,8 @@ char * scrubHTML(const char *str){
 
   //this for loop goes through the passed in string and finds where the special characters are an then replaces
   //them with the escaped charcters versions of them
-  for(int i = 0; i < stringLength; i++){
+  i = 0;
+  for(i = 0; i < stringLength; i++){
     if(str[i] == '&'){
       escapedArray[index] = '&';
       escapedArray[index + 1] = 'a';
@@ -114,7 +87,8 @@ char * smartScrubHTML(const char *str){
   //length of the new string.
   char testString[7];
   int newStringLength = 0;
-  for(int i = 0; i < stringLength; i++){
+  int i = 0;
+  for(i = 0; i < stringLength; i++){
     if(str[i] == '&'){
 
 
@@ -151,7 +125,8 @@ char * smartScrubHTML(const char *str){
   char *escapedArray = (char *) malloc((newStringLength + 1) * sizeof(char));
   int index = 0;
 
-  for(int i = 0; i < stringLength; i++){
+  i = 0;
+  for(i = 0; i < stringLength; i++){
     if(str[i] == '&'){
       if(str[i + 1] == 'l' && str[i + 2] == 't' && str[i + 3] == ';'){
 
@@ -240,7 +215,8 @@ void trim(char *str){
   char *tempStr = (char *) malloc(sizeof(char) * (stringLength + 1));
   int index = 0;
 
-  for(int i = 0; i < stringLength; i++){
+  int i = 0;
+  for(i = 0; i < stringLength; i++){
     if(str[i] != ' '){
       tempStr[index] = str[i];
       index++;
@@ -256,7 +232,8 @@ char * formatPhoneNumber(const char *phone){
 
   char *allNums = (char *) malloc(sizeof(char) * stringLength);
   int index = 0;
-  for(int j = 0; j < stringLength; j++){
+  int j = 0;
+  for(j = 0; j < stringLength; j++){
     if(phone[j] >= '0' && phone[j] <= '9'){
       allNums[index] = phone[j];
       index++;
@@ -268,14 +245,16 @@ char * formatPhoneNumber(const char *phone){
   }
   //for numbers like 1-402-555-1234
   //get rid of the one in front and move all the numbers down an index
+  int k = 0;
   if(strlen(allNums) == 11){
-    for(int k = 0; k < stringLength; k++){
+    for(k = 0; k < stringLength; k++){
       allNums[k] = allNums[k+1];
     }
   }
 
   index = 0;
-  for(int i = 0; i < formatedNumLen; i++){
+  int i = 0;
+  for(i = 0; i < formatedNumLen; i++){
     if(i == 0){
       formatedNumber[0] = '(';
     }
@@ -307,9 +286,54 @@ char * formatPhoneNumber(const char *phone){
 
   return formatedNumber;
 }
-/*
+
 int getFileSize(const char *fileName){
+  int sumBytes = 0;
+  FILE *f = fopen(fileName, "r");
+
+  if(f == NULL){
+    return -1;
+  }
+
+  char c = fgetc(f);
+
+  while(!feof(f)){
+    sumBytes++;
+    c = fgetc(f);
+  }
+
+  fclose(f);
+  return sumBytes;
 }
+
 char * getFileContents(const char *fileName){
+  char line[1000];
+  FILE *f = fopen(fileName, "r");
+
+  if(f == NULL){
+    return NULL;
+  }
+
+  long sizeOfFile = 0;
+  if(f){
+    fseek(f, 0, SEEK_END);
+    sizeOfFile = ftell(f);
+    fseek(f, 0, SEEK_SET);
+  }
+
+  char *newString = (char *) malloc(sizeOfFile);
+  int index = 0;
+  int i;
+
+  char * str = fgets(line, 1000, f);
+  while(str != NULL){
+    for(i = 0; i < strlen(str); i++){
+      newString[index] = str[i];
+      index++;
+    }
+    str = fgets(line, 1000, f);
+  }
+
+  fclose(f);
+  return newString;
 }
-*/
