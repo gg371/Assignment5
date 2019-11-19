@@ -8,26 +8,42 @@ int main(int argc, char **argv){
     int charCount = 0;
     int stringLength = strlen(str);
 
-    for(int i = 0; i < stringLength; i++){
-      if(str[i] == '-'){
+  //  printf("%d\n", stringLength);
+
+    int j;
+    for(j = 0; j < stringLength; j++){
+      if(str[j] == '-'){
         hyphenCount++;
       }
     }
 
-    FILE *dictionary = fopen("/usr/share/dict/american.txt", "r");
+    FILE *dictionary = fopen("/usr/share/dict/american", "r");
     char line[100];
 
     char *word = fgets(line, 100, dictionary);
-    
+
+    char *tempArr = (char *) malloc(sizeof(char) * stringLength);
+    int index = 0;
+    int i;
+
     while(word != NULL){
-      for(int i = 0; i < stringLength; i++){
-        if(word[i] == str[i] || str[i] == '-'){
+
+      for(i = 0; i < stringLength; i++){
+        if(str[i] == word[i]){
           charCount++;
         }
+        else if(str[i] != '-' && str[i] != word[i]){
+          charCount = 0;
+          break;
+        }
+
       }
-      if(charCount == stringLength){
+
+      if((stringLength - (charCount + hyphenCount)) == 0 && strlen(word) == stringLength + 1){
+        //printf("%d %d %d\n", charCount, hyphenCount, strlen(word));
         printf("%s\n", word);
       }
+
       word = fgets(line, 100, dictionary);
     }
 
