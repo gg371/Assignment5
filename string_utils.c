@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 
 #include "string_utils.h"
 
@@ -14,22 +15,23 @@ char * scrubHTML(const char *str){
     return NULL;
   }
   int stringLength = strlen(str);
+  int newStringLength = stringLength;
   //this for loop goes through the passed in string and stringLengths the number of times
   //one of the special characters shows up to calculate the extra amount of memory needed for the
   //length of the new string.
   int i = 0;
   for(i = 0; i < stringLength; i++){
     if(str[i] == '&'){
-      stringLength = stringLength + 4;
+      newStringLength += 4;
     }
     else if(str[i] == '<' || str[i] == '>'){
-      stringLength = stringLength + 3;
+      newStringLength += 3;
     }
     else if(str[i] == '"'){
-      stringLength = stringLength + 5;
+       newStringLength += 5;
     }
   }
-  char *escapedArray = (char *) malloc((stringLength + 1) * sizeof(char));
+  char *escapedArray = (char *) malloc((newStringLength + 1) * sizeof(char));
   int index = 0;
 
   //this for loop goes through the passed in string and finds where the special characters are an then replaces
@@ -72,9 +74,8 @@ char * scrubHTML(const char *str){
       index++;
     }
   }
-  escapedArray[stringLength] = '\0';
+  escapedArray[index] = '\0';
   return escapedArray;
-
 }
 
 char * smartScrubHTML(const char *str){
@@ -82,10 +83,11 @@ char * smartScrubHTML(const char *str){
     return NULL;
   }
   int stringLength = strlen(str);
+  //printf("input %s\n", str);
   //this for loop goes through the passed in string and stringLengths the number of times
   //one of the special characters shows up to calculate the extra amount of memory needed for the
   //length of the new string.
-  char testString[7];
+  //char testString[7];
   int newStringLength = 0;
   int i = 0;
   for(i = 0; i < stringLength; i++){
@@ -102,7 +104,7 @@ char * smartScrubHTML(const char *str){
       }
       else if(str[i + 1] == 'a' && str[i + 2] == 'm' && str[i + 3] == 'p' && str[i + 4] == ';'){
         newStringLength = newStringLength + 5;
-        i = i + 4;
+        i = i + 5;
       }
       else if(str[i + 1] == 'q' && str[i + 2] == 'u' && str[i + 3] == 'o' && str[i + 4] == 't' && str[i + 5] == ';'){
         newStringLength = newStringLength + 6;
@@ -116,7 +118,7 @@ char * smartScrubHTML(const char *str){
       newStringLength = newStringLength + 4;
     }
     else if(str[i] == '"'){
-      newStringLength = newStringLength + 5;
+      newStringLength = newStringLength + 6;
     }
     else{
       newStringLength++;
@@ -205,32 +207,69 @@ char * smartScrubHTML(const char *str){
       index++;
     }
   }
-  escapedArray[newStringLength + 1] = '\0';
+  escapedArray[newStringLength] = '\0';
   return escapedArray;
 
 }
 
 void trim(char *str){
   int stringLength = strlen(str);
-  char *tempStr = (char *) malloc(sizeof(char) * (stringLength + 1));
-  int index = 0;
+  int countLeadingSpaces = 0;
+  int countTrailingSpaces = 0;
 
-  int i = 0;
+  int i;
+  //count leading whitespace
   for(i = 0; i < stringLength; i++){
-    if(str[i] != ' '){
-      tempStr[index] = str[i];
-      index++;
+    if(str[i] == ' ' || str[i] == '\n' || str[i] == '\t'){
+      countLeadingSpaces++;
+    }
+    else{
+      break;
     }
   }
-  str = tempStr;
+
+  int j;
+  //count trailing whitespace
+  for(j = stringLength - 1; j >= 0; j--){
+    if(str[j] == ' ' || str[j] == '\n' || str[j] == '\t'){
+      countTrailingSpaces++;
+    }
+    else{
+      break;
+    }
+  }
+
+  //printf("%d, %d\n", countLeadingSpaces, countTrailingSpaces);
+  int newLength = stringLength - (countLeadingSpaces + countTrailingSpaces);
+  //char *tempStr = (char *) malloc(sizeof(char) * (newLength + 1));
+
+  int k;
+  for(k = 0; k < newLength; k++){
+    str[k] = str[k + countLeadingSpaces];
+    //tempStr[index] = str[k];
+  }
+
+  str[newLength] = '\0';
+  //tempStr[index] = '\0';
+
+  //str = NULL;
+  // str = (char *)malloc(sizeof(char) * newLength + 1);
+  //
+  // strncpy(str, &tempStr[0], newLength);
+  // str[newLength] = '\0';
+
+  //printf("%s\n", str);
 }
 
 char * formatPhoneNumber(const char *phone){
+  if(phone == NULL){
+    return NULL;
+  }
   int stringLength = strlen(phone);
-  int formatedNumLen = 15; //14 + 1
+  int formatedNumLen = 15;
   char *formatedNumber = (char *) malloc(formatedNumLen * sizeof(char));
 
-  char *allNums = (char *) malloc(sizeof(char) * stringLength);
+  char *allNums = (char *) malloc(sizeof(char) * stringLength + 1);
   int index = 0;
   int j = 0;
   for(j = 0; j < stringLength; j++){
@@ -238,6 +277,11 @@ char * formatPhoneNumber(const char *phone){
       allNums[index] = phone[j];
       index++;
     }
+  }
+  allNums[index] = '\0';
+
+  if(allNums == NULL){
+    return NULL;
   }
 
   if(strlen(allNums) < 10 || strlen(allNums) > 11){
@@ -297,7 +341,7 @@ int getFileSize(const char *fileName){
 
   char c = fgetc(f);
 
-  while(!feof(f)){
+  while(c != EOF){ //!feof(f)
     sumBytes++;
     c = fgetc(f);
   }
@@ -307,32 +351,29 @@ int getFileSize(const char *fileName){
 }
 
 char * getFileContents(const char *fileName){
-  char line[1000];
   FILE *f = fopen(fileName, "r");
+  char line[sizeof(*f)]; //1000
 
   if(f == NULL){
     return NULL;
   }
 
-  long sizeOfFile = 0;
-  if(f){
-    fseek(f, 0, SEEK_END);
-    sizeOfFile = ftell(f);
-    fseek(f, 0, SEEK_SET);
-  }
+  int fileSize = getFileSize(fileName);
 
-  char *newString = (char *) malloc(sizeOfFile);
+  char *newString = (char *) malloc(fileSize + 1);
   int index = 0;
   int i;
 
-  char * str = fgets(line, 1000, f);
+  char *str = fgets(line, fileSize, f); //1000
   while(str != NULL){
     for(i = 0; i < strlen(str); i++){
       newString[index] = str[i];
       index++;
     }
-    str = fgets(line, 1000, f);
+    str = fgets(line, fileSize, f); //1000
   }
+
+  newString[fileSize] = '\0';
 
   fclose(f);
   return newString;
