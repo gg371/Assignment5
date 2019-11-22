@@ -142,6 +142,7 @@ public class StringUtils {
 
 	    public static int getFileSize(String fileName) {
 	    	int sumBytes = 0;
+	    	int lineCount = 0;
 	    	
 	    	File f = new File(fileName);
 	    	
@@ -149,12 +150,14 @@ public class StringUtils {
 			try {
 				s = new Scanner(f);
 				String line = s.nextLine();
-				sumBytes += (line.length() + 1);
+				sumBytes += (line.length());
 		    	
 		    	while(s.hasNextLine()) {
+		    		lineCount++;
 		    		line = s.nextLine();
-		    		sumBytes += (line.length() + 1);
+		    		sumBytes += (line.length());
 		    	}
+		    	sumBytes += lineCount;
 		 
 		    	s.close();
 		    	
@@ -178,7 +181,13 @@ public class StringUtils {
 	    		
 	    		while(s.hasNextLine()) {
 	    			line = s.nextLine();
-	    			str += line + "\n";
+	    			
+	    			if(s.hasNextLine()) {
+	    				str += line + "\n";
+	    			}
+	    			else {
+	    				str += line;
+	    			}
 	    		}
 	    		
 	    		s.close();
