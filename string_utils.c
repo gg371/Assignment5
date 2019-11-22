@@ -28,7 +28,7 @@ char * scrubHTML(const char *str){
       newStringLength += 3;
     }
     else if(str[i] == '"'){
-       newStringLength += 5;
+      newStringLength += 5;
     }
   }
   char *escapedArray = (char *) malloc((newStringLength + 1) * sizeof(char));
@@ -83,132 +83,187 @@ char * smartScrubHTML(const char *str){
     return NULL;
   }
   int stringLength = strlen(str);
-  //printf("input %s\n", str);
-  //this for loop goes through the passed in string and stringLengths the number of times
-  //one of the special characters shows up to calculate the extra amount of memory needed for the
-  //length of the new string.
-  //char testString[7];
-  int newStringLength = 0;
+  char *escapedArray = (char *) malloc((stringLength * 6) * sizeof(char));
+  // char *amp = "&amp;"
+  // char *lt = "&lt;"
+  // char *gt = "&gt;"
+  // char *quot = "&quot;"
+  int index = 0;
   int i = 0;
   for(i = 0; i < stringLength; i++){
     if(str[i] == '&'){
-
-
       if(str[i + 1] == 'l' && str[i + 2] == 't' && str[i + 3] == ';'){
-        newStringLength = newStringLength + 4;
-        i = i + 4;
+        escapedArray = strcat(escapedArray, "&lt;");
+        i = i + 3;
+        index += 4;
       }
       else if(str[i + 1] == 'g' && str[i + 2] == 't' && str[i + 3] == ';'){
-        newStringLength = newStringLength + 4;
-        i = i + 4;
+        escapedArray = strcat(escapedArray, "&gt;");
+        i = i + 3;
+        index += 4;
       }
       else if(str[i + 1] == 'a' && str[i + 2] == 'm' && str[i + 3] == 'p' && str[i + 4] == ';'){
-        newStringLength = newStringLength + 5;
-        i = i + 5;
-      }
-      else if(str[i + 1] == 'q' && str[i + 2] == 'u' && str[i + 3] == 'o' && str[i + 4] == 't' && str[i + 5] == ';'){
-        newStringLength = newStringLength + 6;
-        i = i + 6;
-      }
-      else{
-        newStringLength = newStringLength + 5;
-      }
-    }
-    else if(str[i] == '<' || str[i] == '>'){
-      newStringLength = newStringLength + 4;
-    }
-    else if(str[i] == '"'){
-      newStringLength = newStringLength + 6;
-    }
-    else{
-      newStringLength++;
-    }
-  }
-  char *escapedArray = (char *) malloc((newStringLength + 1) * sizeof(char));
-  int index = 0;
-
-  i = 0;
-  for(i = 0; i < stringLength; i++){
-    if(str[i] == '&'){
-      if(str[i + 1] == 'l' && str[i + 2] == 't' && str[i + 3] == ';'){
-
-        escapedArray[index] = '&';
-        escapedArray[index + 1] = 'l';
-        escapedArray[index + 2] = 't';
-        escapedArray[index + 3] = ';';
-        i = i + 3;
-        index = index + 4;
-      }
-      else if(str[i + 1] == 'g' && str[i + 2] == 't' && str[i + 3] == ';'){
-
-        escapedArray[index] = '&';
-        escapedArray[index + 1] = 'g';
-        escapedArray[index + 2] = 't';
-        escapedArray[index + 3] = ';';
-        i = i + 3;
-
-        index = index + 4;
-      }
-      else if(str[i + 1] == 'a' && str[i + 2] == 'm' && str[i + 3] == 'p' && str[i + 4] == ';'){
-        escapedArray[index] = '&';
-        escapedArray[index + 1] = 'a';
-        escapedArray[index + 2] = 'm';
-        escapedArray[index + 3] = 'p';
-        escapedArray[index + 4] = ';';
+        escapedArray = strcat(escapedArray, "&amp;");
         i = i + 4;
-        index = index + 5;
+        index += 5;
       }
       else if(str[i + 1] == 'q' && str[i + 2] == 'u' && str[i + 3] == 'o' && str[i + 4] == 't' && str[i + 5] == ';'){
-
-        escapedArray[index] = '&';
-        escapedArray[index + 1] = 'q';
-        escapedArray[index + 2] = 'u';
-        escapedArray[index + 3] = 'o';
-        escapedArray[index + 4] = 't';
-        escapedArray[index + 5] = ';';
+        escapedArray = strcat(escapedArray, "&quot;");
         i = i + 5;
-
-        index = index + 6;
+        index += 6;
       }
       else{
-      escapedArray[index] = '&';
-      escapedArray[index + 1] = 'a';
-      escapedArray[index + 2] = 'm';
-      escapedArray[index + 3] = 'p';
-      escapedArray[index + 4] = ';';
-      index = index + 5;
+        escapedArray = strcat(escapedArray, "&amp;");
+        index += 5;
       }
     }
     else if(str[i] == '<'){
-      escapedArray[index] = '&';
-      escapedArray[index + 1] = 'l';
-      escapedArray[index + 2] = 't';
-      escapedArray[index + 3] = ';';
-      index = index + 4;
+      escapedArray = strcat(escapedArray, "&lt;");
+      index += 4;
     }
     else if(str[i] == '>'){
-      escapedArray[index] = '&';
-      escapedArray[index + 1] = 'g';
-      escapedArray[index + 2] = 't';
-      escapedArray[index + 3] = ';';
-      index = index + 4;
+      escapedArray = strcat(escapedArray, "&gt;");
+      index += 4;
     }
     else if(str[i] == '"'){
-      escapedArray[index] = '&';
-      escapedArray[index + 1] = 'q';
-      escapedArray[index + 2] = 'u';
-      escapedArray[index + 3] = 'o';
-      escapedArray[index + 4] = 't';
-      escapedArray[index + 5] = ';';
-      index = index + 6;
+      escapedArray = strcat(escapedArray, "&quot;");
+      index += 6;
     }
     else{
       escapedArray[index] = str[i];
       index++;
     }
   }
+  int newStringLength = strlen(escapedArray);
   escapedArray[newStringLength] = '\0';
   return escapedArray;
+
+  //printf("input %s\n", str);
+  //this for loop goes through the passed in string and stringLengths the number of times
+  //one of the special characters shows up to calculate the extra amount of memory needed for the
+  //length of the new string.
+  //char testString[7];
+  // int newStringLength = 0;
+  // int i = 0;
+  // for(i = 0; i < stringLength; i++){
+  //   if(str[i] == '&'){
+  //
+  //
+  //     if(str[i + 1] == 'l' && str[i + 2] == 't' && str[i + 3] == ';'){
+  //       newStringLength = newStringLength + 4;
+  //       i = i + 4;
+  //     }
+  //     else if(str[i + 1] == 'g' && str[i + 2] == 't' && str[i + 3] == ';'){
+  //       newStringLength = newStringLength + 4;
+  //       i = i + 4;
+  //     }
+  //     else if(str[i + 1] == 'a' && str[i + 2] == 'm' && str[i + 3] == 'p' && str[i + 4] == ';'){
+  //       newStringLength = newStringLength + 5;
+  //       i = i + 5;
+  //     }
+  //     else if(str[i + 1] == 'q' && str[i + 2] == 'u' && str[i + 3] == 'o' && str[i + 4] == 't' && str[i + 5] == ';'){
+  //       newStringLength = newStringLength + 6;
+  //       i = i + 6;
+  //     }
+  //     else{
+  //       newStringLength = newStringLength + 5;
+  //     }
+  //   }
+  //   else if(str[i] == '<' || str[i] == '>'){
+  //     newStringLength = newStringLength + 4;
+  //   }
+  //   else if(str[i] == '"'){
+  //     newStringLength = newStringLength + 6;
+  //   }
+  //   else{
+  //     newStringLength++;
+  //   }
+  // }
+  // char *escapedArray = (char *) malloc((newStringLength + 1) * sizeof(char));
+  // int index = 0;
+  //
+  // i = 0;
+  // for(i = 0; i < stringLength; i++){
+  //   if(str[i] == '&'){
+  //     if(str[i + 1] == 'l' && str[i + 2] == 't' && str[i + 3] == ';'){
+  //
+  //       escapedArray[index] = '&';
+  //       escapedArray[index + 1] = 'l';
+  //       escapedArray[index + 2] = 't';
+  //       escapedArray[index + 3] = ';';
+  //       i = i + 3;
+  //       index = index + 4;
+  //     }
+  //     else if(str[i + 1] == 'g' && str[i + 2] == 't' && str[i + 3] == ';'){
+  //
+  //       escapedArray[index] = '&';
+  //       escapedArray[index + 1] = 'g';
+  //       escapedArray[index + 2] = 't';
+  //       escapedArray[index + 3] = ';';
+  //       i = i + 3;
+  //
+  //       index = index + 4;
+  //     }
+  //     else if(str[i + 1] == 'a' && str[i + 2] == 'm' && str[i + 3] == 'p' && str[i + 4] == ';'){
+  //       escapedArray[index] = '&';
+  //       escapedArray[index + 1] = 'a';
+  //       escapedArray[index + 2] = 'm';
+  //       escapedArray[index + 3] = 'p';
+  //       escapedArray[index + 4] = ';';
+  //       i = i + 4;
+  //       index = index + 5;
+  //     }
+  //     else if(str[i + 1] == 'q' && str[i + 2] == 'u' && str[i + 3] == 'o' && str[i + 4] == 't' && str[i + 5] == ';'){
+  //
+  //       escapedArray[index] = '&';
+  //       escapedArray[index + 1] = 'q';
+  //       escapedArray[index + 2] = 'u';
+  //       escapedArray[index + 3] = 'o';
+  //       escapedArray[index + 4] = 't';
+  //       escapedArray[index + 5] = ';';
+  //       i = i + 5;
+  //
+  //       index = index + 6;
+  //     }
+  //     else{
+  //     escapedArray[index] = '&';
+  //     escapedArray[index + 1] = 'a';
+  //     escapedArray[index + 2] = 'm';
+  //     escapedArray[index + 3] = 'p';
+  //     escapedArray[index + 4] = ';';
+  //     index = index + 5;
+  //     }
+  //   }
+  //   else if(str[i] == '<'){
+  //     escapedArray[index] = '&';
+  //     escapedArray[index + 1] = 'l';
+  //     escapedArray[index + 2] = 't';
+  //     escapedArray[index + 3] = ';';
+  //     index = index + 4;
+  //   }
+  //   else if(str[i] == '>'){
+  //     escapedArray[index] = '&';
+  //     escapedArray[index + 1] = 'g';
+  //     escapedArray[index + 2] = 't';
+  //     escapedArray[index + 3] = ';';
+  //     index = index + 4;
+  //   }
+  //   else if(str[i] == '"'){
+  //     escapedArray[index] = '&';
+  //     escapedArray[index + 1] = 'q';
+  //     escapedArray[index + 2] = 'u';
+  //     escapedArray[index + 3] = 'o';
+  //     escapedArray[index + 4] = 't';
+  //     escapedArray[index + 5] = ';';
+  //     index = index + 6;
+  //   }
+  //   else{
+  //     escapedArray[index] = str[i];
+  //     index++;
+  //   }
+  // }
+  // escapedArray[newStringLength] = '\0';
+  // return escapedArray;
 
 }
 
