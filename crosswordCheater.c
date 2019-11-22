@@ -1,10 +1,65 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
+
+#include "string_utils.h"
+
+void trim(char *str){
+  int stringLength = strlen(str);
+  int countLeadingSpaces = 0;
+  int countTrailingSpaces = 0;
+
+  int i;
+  //count leading whitespace
+  for(i = 0; i < stringLength; i++){
+    if(str[i] == ' ' || str[i] == '\n' || str[i] == '\t'){
+      countLeadingSpaces++;
+    }
+    else{
+      break;
+    }
+  }
+
+  int j;
+  //count trailing whitespace
+  for(j = stringLength - 1; j >= 0; j--){
+    if(str[j] == ' ' || str[j] == '\n' || str[j] == '\t'){
+      countTrailingSpaces++;
+    }
+    else{
+      break;
+    }
+  }
+
+  int newLength = stringLength - (countLeadingSpaces + countTrailingSpaces);
+
+  int k;
+  for(k = 0; k < newLength; k++){
+    str[k] = str[k + countLeadingSpaces];
+  }
+
+  str[newLength] = '\0';
+}
+
+//returns 0 if the words is the same, and -1 if it isn't
+int isSame(char *newWord, char *str){
+  int j = 0;
+  int count = 0;
+
+  while(newWord[j] == str[j] || str[j] == '-'){
+    if(j == strlen(str)){
+      return 0;
+    }
+    j++;
+    count++;
+  }
+
+  return -1;
+}
 
 int main(int argc, char **argv){
     char *str = argv[1];
-    int charCount = 0;
     int stringLength = strlen(str);
 
     FILE *dictionary = fopen("/usr/share/dict/american", "r");
@@ -12,42 +67,17 @@ int main(int argc, char **argv){
 
     char *word = fgets(line, 100, dictionary);
 
-
     while(word != NULL){
-
-      int j;
-      for(j = strlen(word) - 1; j >= 0; j--){
-        if(word[j] == ' ' || word[j] == '\n' || word[j] == '\t'){
-            word[j] = '\0';
-        }
-      }
+      trim(word);
 
       if(strlen(word) == stringLength){
-
-        int i;
-        for(i = 0; i < stringLength; i++){
-          if(str[i] == '-' || str[i] == word[i]){
-            charCount++;
-          }
-          else{
-            charCount = 0;
-            break;
-          }
+        if(isSame(word, str) == 0){
+            printf("%s\n", word);
         }
-
-        if(charCount == stringLength){
-          printf("%s\n", word);
-        }
-
       }
 
       word = fgets(line, 100, dictionary);
     }
 
     fclose(dictionary);
-
-    // char *wo = "fool";
-    // if(strcmp(wo, "fool") == 0){
-    //   printf("%s\n", wo);
-    // }
 }
