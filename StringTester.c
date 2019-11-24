@@ -5,21 +5,29 @@
 */
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "string_utils.h"
 
 int main(int argc, char **argv){
-  char *str = "< 3 I ate & chicken";
+  char *str = "<html><body></body></html>";
 
   char *newStr = scrubHTML(str);
   printf("%s\n", newStr);
 
-  char *str2 = "  hi  ";
+  char *check = "Computer Science & Engineering";
+  char *smart = smartScrubHTML(check);
+  printf("%s\n", smart);
+
+  char *str2 = (char *) malloc(sizeof(char) * (7));
+  char *Tempstr = "  foo  ";
+  strcpy(str2, Tempstr);
   char *str3 = "lo";
   printf("%s%s\n", str2, str3);
   trim(str2);
+  printf("%s%s\n", str2, str3);
 
-  char *phone = "+402-555-1234";
+  char *phone = "402 555 1234";
   char *newPhone = formatPhoneNumber(phone);
   printf("%s\n", newPhone);
 
