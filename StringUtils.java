@@ -5,11 +5,31 @@ import java.util.Scanner;
 public class StringUtils {
 	 	public static String trim(String s) {
 	 		String tempStr = "";
+	 		int countLeadingSpaces = 0;
+	 		int countTrailingSpaces = 0;
 	 		
 	 		for(int i = 0; i < s.length(); i++) {
-	 			if(s.charAt(i) != ' ' && s.charAt(i) != '\n' && s.charAt(i) != '\t') {
-	 				tempStr += s.charAt(i);
+	 			if(s.charAt(i) == ' ' || s.charAt(i) == '\n' || s.charAt(i) == '\t') {
+	 				countLeadingSpaces++;
 	 			}
+	 			else {
+	 				break;
+	 			}
+	 		}
+	 		
+	 		for(int i = s.length() - 1; i >= 0; i--) {
+	 			if(s.charAt(i) == ' ' || s.charAt(i) == '\n' || s.charAt(i) == '\t') {
+	 				countTrailingSpaces++;
+	 			}
+	 			else {
+	 				break;
+	 			}
+	 		}
+	 		
+	 		int newLength = s.length() - (countLeadingSpaces + countTrailingSpaces);
+	 		
+	 		for(int k = 0; k < newLength; k++) {
+	 			tempStr += s.charAt(k + countLeadingSpaces);
 	 		}
 	 		
 	 		return tempStr;
