@@ -11,14 +11,17 @@
 #include "string_utils.h"
 
 char * scrubHTML(const char *str){
+  //returns NULL if the string passed into the function is NULL
   if(str == NULL){
     return NULL;
   }
+
   int stringLength = strlen(str);
   int newStringLength = stringLength;
-  //this for loop goes through the passed in string and stringLengths the number of times
-  //one of the special characters shows up to calculate the extra amount of memory needed for the
-  //length of the new string.
+
+  /*this for loop goes through the passed in string and stringLengths the number of times
+  one of the special characters shows up to calculate the extra amount of memory needed for the
+  length of the new string.*/
   int i = 0;
   for(i = 0; i < stringLength; i++){
     if(str[i] == '&'){
@@ -31,11 +34,12 @@ char * scrubHTML(const char *str){
       newStringLength += 5;
     }
   }
+
   char *escapedArray = (char *) malloc((newStringLength + 1) * sizeof(char));
   int index = 0;
 
-  //this for loop goes through the passed in string and finds where the special characters are an then replaces
-  //them with the escaped charcters versions of them
+  /*this for loop goes through the passed in string and finds where the special characters are an then replaces
+  them with the escaped charcters versions of them*/
   i = 0;
   for(i = 0; i < stringLength; i++){
     if(str[i] == '&'){
@@ -79,15 +83,18 @@ char * scrubHTML(const char *str){
 }
 
 char * smartScrubHTML(const char *str){
+  //returns NULL if the string passed into the function is NULL
   if(str == NULL){
     return NULL;
   }
+
   int stringLength = strlen(str);
   char *escapedArray = (char *) malloc((stringLength * 6) * sizeof(char));
-  // char *amp = "&amp;"
-  // char *lt = "&lt;"
-  // char *gt = "&gt;"
-  // char *quot = "&quot;"
+
+  /*this for loop goes through the string passed into the function to look for the special characters
+  if there is a special character it will be changed the escaped version. If the escaped version of one of
+  the special characters is in the string, it will stay like that.*/
+
   int index = 0;
   int i = 0;
   for(i = 0; i < stringLength; i++){
@@ -134,8 +141,11 @@ char * smartScrubHTML(const char *str){
       index++;
     }
   }
+
   int newStringLength = strlen(escapedArray);
+
   escapedArray[newStringLength] = '\0';
+
   return escapedArray;
 
   //printf("input %s\n", str);
@@ -294,29 +304,19 @@ void trim(char *str){
     }
   }
 
-  //printf("%d, %d\n", countLeadingSpaces, countTrailingSpaces);
   int newLength = stringLength - (countLeadingSpaces + countTrailingSpaces);
-  //char *tempStr = (char *) malloc(sizeof(char) * (newLength + 1));
 
   int k;
+  //overrides the original string to have no leading or trailing whitespace
   for(k = 0; k < newLength; k++){
     str[k] = str[k + countLeadingSpaces];
-    //tempStr[index] = str[k];
   }
 
   str[newLength] = '\0';
-  //tempStr[index] = '\0';
-
-  //str = NULL;
-  // str = (char *)malloc(sizeof(char) * newLength + 1);
-  //
-  // strncpy(str, &tempStr[0], newLength);
-  // str[newLength] = '\0';
-
-  //printf("%s\n", str);
 }
 
 char * formatPhoneNumber(const char *phone){
+  //returns NULL if the string given to the function is NULL
   if(phone == NULL){
     return NULL;
   }
@@ -390,13 +390,15 @@ int getFileSize(const char *fileName){
   int sumBytes = 0;
   FILE *f = fopen(fileName, "r");
 
+  //returns -1 if the file is NULL, becuase normally a file couldn't have -1 bytes
   if(f == NULL){
     return -1;
   }
 
   char c = fgetc(f);
 
-  while(c != EOF){ //!feof(f)
+  //goes through the entire file and reads it character by character to count the number of bytes in the file
+  while(c != EOF){
     sumBytes++;
     c = fgetc(f);
   }
@@ -407,8 +409,9 @@ int getFileSize(const char *fileName){
 
 char * getFileContents(const char *fileName){
   FILE *f = fopen(fileName, "r");
-  char line[sizeof(*f)]; //1000
+  char line[sizeof(*f)];
 
+  //returns NULL if the file is NULL
   if(f == NULL){
     return NULL;
   }
@@ -419,13 +422,14 @@ char * getFileContents(const char *fileName){
   int index = 0;
   int i;
 
-  char *str = fgets(line, fileSize, f); //1000
+  char *str = fgets(line, fileSize, f);
+  //goes through the entire file and reads it line by line then adds its contents to a string
   while(str != NULL){
     for(i = 0; i < strlen(str); i++){
       newString[index] = str[i];
       index++;
     }
-    str = fgets(line, fileSize, f); //1000
+    str = fgets(line, fileSize, f);
   }
 
   newString[fileSize] = '\0';
