@@ -1,10 +1,15 @@
+/*
+* Authors: Gracyn Green and Andrea McGrane
+* Date: 11/24/2019
+* This function takes a partially completed word and lists all the words that
+* could possibly be the word.
+*/
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 
-#include "string_utils.h"
-
+//this function trims trailing and leading whitespace
 void trim(char *str){
   int stringLength = strlen(str);
   int countLeadingSpaces = 0;
@@ -42,7 +47,7 @@ void trim(char *str){
   str[newLength] = '\0';
 }
 
-//returns 0 if the words is the same, and -1 if it isn't
+//returns 0 if the word is the same, and -1 if it isn't
 int isSame(char *newWord, char *str){
   int j = 0;
   int count = 0;
@@ -67,9 +72,14 @@ int main(int argc, char **argv){
 
     char *word = fgets(line, 100, dictionary);
 
+    //the while loop will stop when there are no more words to compare
     while(word != NULL){
       trim(word);
 
+      /*
+      * will print out the word if it is the same length of the string, and has
+      * all the letters and hyphens in the right spaces 
+      */
       if(strlen(word) == stringLength){
         if(isSame(word, str) == 0){
             printf("%s\n", word);

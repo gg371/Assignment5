@@ -1,5 +1,5 @@
 /**
-* Author: Gracyn and Andrea
+* Authors: Gracyn and Andrea
 * Date: 11/24/19
 * These are the code for the functions defined in string_utils.h
 */
