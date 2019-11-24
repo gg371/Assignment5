@@ -43,7 +43,7 @@ char * scrubHTML(const char *str){
 
   /*
   * this for loop goes through the passed in string and finds where the
-  * special characters are an then replaces them with the escaped charcters
+  * special characters are an then replaces them with the escaped characters
   * versions of them
   */
 
@@ -207,6 +207,8 @@ char * formatPhoneNumber(const char *phone){
   char *allNums = (char *) malloc(sizeof(char) * stringLength + 1);
   int index = 0;
   int j = 0;
+  
+  //only adds the numbers to the new string
   for(j = 0; j < stringLength; j++){
     if(phone[j] >= '0' && phone[j] <= '9'){
       allNums[index] = phone[j];
@@ -236,6 +238,8 @@ char * formatPhoneNumber(const char *phone){
 
   index = 0;
   int i = 0;
+
+  //formats the number in the specified format of (###) ###-####
   for(i = 0; i < formatedNumLen; i++){
     if(i == 0){
       formatedNumber[0] = '(';
